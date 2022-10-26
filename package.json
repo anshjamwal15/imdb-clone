@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "concurrently": "^7.5.0"
+  },
+  "name": "imdb-clone",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "dev": "concurrently \"cd backend && nodemon index.js\" \"cd frontend && npm start\" ",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

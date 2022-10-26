@@ -11,9 +11,12 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import LocalMoviesIcon  from '@mui/icons-material/LocalMovies';
+import LocalMoviesIcon from '@mui/icons-material/LocalMovies';
+import { useNavigate } from 'react-router-dom';
 
 export default function MyAppBar() {
+
+    const navigate = useNavigate();
 
     const logo = "https://cdn.dribbble.com/userupload/3158902/file/original-7c71bfa677e61dea61bc2acd59158d32.jpg?resize=400x0";
 
@@ -37,10 +40,10 @@ export default function MyAppBar() {
 
     const logOut = (e) => {
         localStorage.removeItem('userDetails');
+        navigate('/');
     }
 
-    const pages = ['All Movies', 'Add Movie', 'Logout'];
-    const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+    const pages = ['All Movies', 'Add Movie'];
 
     return (
         <AppBar position="static" >
@@ -154,11 +157,9 @@ export default function MyAppBar() {
                             open={Boolean(anchorUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography textAlign="center">{setting}</Typography>
-                                </MenuItem>
-                            ))}
+                            <MenuItem onClick={handleCloseUserMenu}>
+                                <Typography onClick={logOut} textAlign="center">Logout</Typography>
+                            </MenuItem>
                         </Menu>
                     </Box>
                 </Toolbar>

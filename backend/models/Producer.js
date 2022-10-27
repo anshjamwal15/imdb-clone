@@ -9,11 +9,11 @@ producer = new Schema({
     movies: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'movies'
+            ref: 'Movies'
         }
     ]
 }, { versionKey: false } );
 
-Producer = mongoose.model('producer', producer);
+Producer = mongoose.model('Producer', producer);
 
 module.exports = Producer;

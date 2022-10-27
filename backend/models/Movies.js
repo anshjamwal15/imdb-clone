@@ -8,12 +8,12 @@ movies = new Schema({
     poster: String,
     producer: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'producer'
+        ref: 'Producer'
     },
     actors: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'actor'
+            ref: 'Actor'
         }
     ]
 }, { versionKey: false });

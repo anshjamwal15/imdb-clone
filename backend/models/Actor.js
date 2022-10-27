@@ -9,7 +9,7 @@ actor = new Schema({
     movies: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'movies'
+            ref: 'Movies'
         }
     ]
 }, { versionKey: false });

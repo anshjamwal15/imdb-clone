@@ -3,6 +3,8 @@ const express = require('express');
 const router = express.Router();
 const Movies = require('../models/Movies');
 const Actor = require('../models/Actor');
+const Producer = require('../models/Producer');
+const movieDto = require('../dtos/movies.dto');
 
 router.get("/welcome", auth, (req, res) => {
     res.status(200).json({ hello: "Welcome" });
@@ -58,18 +60,32 @@ router.post('/add/actor', async (req, res) => {
 
 router.post('/addActors', async (req, res) => {
 
-    const name = 'Sholay';
+    const movieName = 'Sholay';
 
-    var exisitingMovie = await Movies.findOne({ name });
+    var exisitingMovie = await Movies.findOne({ movieName });
 
-    req.body.forEach(async function (actor) {
+    const { name, gender, dob, bio } = req.body.producer;
+
+    const producer = await Producer.create({
+        name: name,
+        gender: gender,
+        dob: dob,
+        bio: bio
+    });
+
+    await Movies.updateOne(
+        { _id: exisitingMovie._id },
+        { $push: { producer: producer._id } },
+    );
+    
+    req.body.actors.forEach(async function (actor) {
         const newActor = await Actor.create({
             name: actor.name,
             gender: actor.gender,
             dob: actor.dob,
             bio: actor.bio
-        });;
-        exisitingMovie = await Movies.updateOne(
+        });
+        await Movies.updateOne(
             { _id: exisitingMovie._id },
             { $push: { actors: newActor._id } },
         );
@@ -82,9 +98,11 @@ router.get('/getmoveies', async (req, res) => {
 
     const name = 'Sholay';
 
-    var exisitingMovie = await Movies.findOne({ name }).populate('actor');
+    const exisitingMovie = await Movies.findOne({ name }).populate('actors');
 
-    res.json(exisitingMovie);
+    const dto = movieDto.getMovies(exisitingMovie);
+
+    res.json(dto);
 
 });
 

@@ -58,31 +58,33 @@ router.post('/add/actor', async (req, res) => {
 
 router.post('/addActors', async (req, res) => {
 
-    const movie = 'sholay';
+    const name = 'Sholay';
 
-    const exisitingMovie = await Movies.findOne({ movie });
-
-    console.log(req.body);
+    var exisitingMovie = await Movies.findOne({ name });
 
     req.body.forEach(async function (actor) {
-        exisitingMovie.updateOne(function (e) {
-            if (e) return console.log(e);
-            const newActor = Actor.create({
-                name: actor.name,
-                gender: actor.gender,
-                dob: actor.dob,
-                bio: actor.bio
-            });
-        });
-
-        // await exisitingMovie.updateOne(
-        //     exisitingMovie,
-        //     { $set: { actors: newActor._id } },
-        //     { new: true, useFindAndModify: false }
-        // );
+        const newActor = await Actor.create({
+            name: actor.name,
+            gender: actor.gender,
+            dob: actor.dob,
+            bio: actor.bio
+        });;
+        exisitingMovie = await Movies.updateOne(
+            { _id: exisitingMovie._id },
+            { $push: { actors: newActor._id } },
+        );
     })
-
     return res.json(exisitingMovie);
+
+});
+
+router.get('/getmoveies', async (req, res) => {
+
+    const name = 'Sholay';
+
+    var exisitingMovie = await Movies.findOne({ name }).populate('actor');
+
+    res.json(exisitingMovie);
 
 });
 

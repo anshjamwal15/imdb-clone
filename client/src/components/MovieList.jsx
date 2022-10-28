@@ -10,12 +10,31 @@ import TextField from '@mui/material/TextField';
 import { CardMedia } from '@mui/material';
 import URL from '../Helper';
 import { AiFillEdit, AiOutlineCloseCircle } from 'react-icons/ai';
+import { BsSave } from 'react-icons/bs';
+import { editMovie } from "../services/service";
 
 export default function MovieList() {
 
     const [movies, setMovies] = React.useState([]);
 
-    const [isActive, setActive] = React.useState();
+    const [opeMovie, setOpenMovie] = React.useState();
+
+    const [openYear, setOpenYear] = React.useState();
+
+    const [openProducer, setOpenProducer] = React.useState();
+
+    const [openActors, setOpenActors] = React.useState();
+
+    const [updatedMovie, setUpdatedMovie] = React.useState({
+        movieName: '', 
+        yearOfRelease: '', 
+        producer: '',
+        actors: ''
+    });
+
+    const handleMovieChange = (e) => {
+        setUpdatedMovie({...updatedMovie, [e.target.name]: e.target.value});
+    };
 
     React.useEffect(() => {
         setTimeout(() => {
@@ -27,14 +46,50 @@ export default function MovieList() {
         }, 1000);
     }, [movies]);
 
-    const toggleClass = (index) => {
-        setActive(index);
+    const handleEdit = () => {
+        
     };
 
-    const toggleClose = () => {
-        setActive(null);
+    const toggleMovie = (index) => {
+        setOpenMovie(index);
     };
-    
+
+    const closeMovie = () => {
+        setOpenMovie(null);
+    };
+
+    const toggleYear = (index) => {
+        setOpenYear(index);
+    };
+
+    const closeYear = () => {
+        setOpenYear(null);
+    };
+
+    const toggleProducer = (index) => {
+        setOpenProducer(index);
+    };
+
+    const closeProducer = () => {
+        setOpenProducer(null);
+    };
+
+    const toggleActors = (index) => {
+        setOpenActors(index);
+    };
+
+    const closeActor = () => {
+        setOpenActors(null);
+    };
+
+    const movie = { updatedMovie };
+
+        // const sendMe = (index) => {
+        //     // editMovie(updatedMovie,index).then((res) => {
+        //     // });
+        // }
+
+
     return (
         <div className='somethin' style={{ margin: "50px" }}>
             <Grid container rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 3 }} justifyContent="center">
@@ -49,29 +104,51 @@ export default function MovieList() {
                             />
                             <CardContent>
                                 <div style={{ display: 'flex' }}>
-                                    <Typography className={isActive == index ? 'inputFields' : ''} sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                                    <Typography className={opeMovie === index ? 'inputFields' : ''} sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                                         {movie.name}
                                     </Typography>
-                                    <div className={isActive == index ? '' : 'inputFields'}>
-                                        <TextField size='small' id="outlined-basic" label="movie name" variant="outlined" />
-                                        <AiOutlineCloseCircle onClick={() => toggleClose()} className={isActive == index ? '' : 'inputFields'} style={{ marginLeft: '8px', marginTop: '10px' }} />
+                                    <div className={opeMovie === index ? '' : 'inputFields'}>
+                                        <TextField name="movieName" onChange={e => handleMovieChange(e)} size='small' id="outlined-basic" label="movie name" variant="outlined" />
+                                        <AiOutlineCloseCircle onClick={() => closeMovie()} className={opeMovie === index ? '' : 'inputFields'} style={{ marginLeft: '8px', marginTop: '10px' }} />
+                                        <BsSave  className={opeMovie === index ? '' : 'inputFields'} style={{ marginLeft: '6px', }} />
                                     </div>
-                                    <AiFillEdit className={isActive == index ? 'inputFields' : ''} onClick={() => toggleClass(index)} style={{ marginLeft: '4px', marginTop: '2px' }} />
+                                    <AiFillEdit className={opeMovie === index ? 'inputFields' : ''} onClick={() => toggleMovie(index)} style={{ marginLeft: '4px', marginTop: '2px' }} />
                                 </div>
 
-                                <Typography variant="h6" component="div">
-                                    {movie.yearOfRelease}
-                                </Typography>
-                                {/* <TextField size='small' id="outlined-basic" label="Movie name" variant="outlined" /> */}
-                                <Typography sx={{ mb: 1.0 }} color="text.secondary">
-                                    {movie.producer.name}
-                                </Typography>
-                                <Typography variant="body2">
-                                    {movie.actors[0].name} , {movie.actors[1].name}
-                                    <br />
-                                    {/* {movie.actors[2].actorName} , {movie.actors[3].actorName} */}
-                                </Typography>
+                                <div style={{ display: 'flex' }}>
+                                    <Typography className={openYear === index ? 'inputFields' : ''} variant="h6" component="div">
+                                        {movie.yearOfRelease}
+                                    </Typography>
+                                    <div className={openYear === index ? '' : 'inputFields'}>
+                                        <TextField name="yearOfRelease" onChange={e => handleMovieChange(e)} size='small' id="outlined-basic" label="Year of Release" variant="outlined" />
+                                        <AiOutlineCloseCircle onClick={() => closeYear()} className={openYear === index ? '' : 'inputFields'} style={{ marginLeft: '8px', marginTop: '10px' }} />
+                                    </div>
+                                    <AiFillEdit className={openYear === index ? 'inputFields' : ''} onClick={() => toggleYear(index)} style={{ marginLeft: '4px', marginTop: '2px' }} />
+                                </div>
+
+                                <div style={{ display: 'flex' }}>
+                                    <Typography className={openProducer === index ? 'inputFields' : ''} sx={{ mb: 1.0 }} color="text.secondary">
+                                        {movie.producer.name}
+                                    </Typography>
+                                    <div className={openProducer === index ? '' : 'inputFields'}>
+                                        <TextField name="producer" onChange={e => handleMovieChange(e)} size='small' id="outlined-basic" label="producer name" variant="outlined" />
+                                        <AiOutlineCloseCircle onClick={() => closeProducer()} className={openProducer === index ? '' : 'inputFields'} style={{ marginLeft: '8px', marginTop: '10px' }} />
+                                    </div>
+                                    <AiFillEdit className={openProducer === index ? 'inputFields' : ''} onClick={() => toggleProducer(index)} style={{ marginLeft: '4px', marginTop: '2px' }} />
+                                </div>
+
+                                <div style={{ display: 'flex' }}>
+                                    <Typography className={openActors === index ? 'inputFields' : ''} variant="body2">
+                                        {movie.actors[0].name} , {movie.actors[1].name}
+                                    </Typography>
+                                    <div className={openActors === index ? '' : 'inputFields'}>
+                                        <TextField name="actors" onChange={e => handleMovieChange(e)} size='small' id="outlined-basic" label="actors name" variant="outlined" />
+                                        <AiOutlineCloseCircle onClick={() => closeActor()} className={openActors === index ? '' : 'inputFields'} style={{ marginLeft: '8px', marginTop: '10px' }} />
+                                    </div>
+                                    <AiFillEdit className={openActors === index ? 'inputFields' : ''} onClick={() => toggleActors(index)} style={{ marginLeft: '4px', marginTop: '2px' }} />
+                                </div>
                             </CardContent>
+
                             <CardActions>
                                 <Button size="small">Learn More</Button>
                             </CardActions>

@@ -116,7 +116,54 @@ router.get('/getallmovies', async (req, res) => {
 
     const dto = movieDto.getAllMovies(allMovies);
 
-    return res.json(dto);
+    return res.json(allMovies);
+});
+
+router.post('/editmovie', async (req, res) => {
+
+    const movie = req.body;
+
+    try {
+        if(movie.movieName !== undefined) {
+            await Movies.updateOne(
+                { _id: req.query.movieId },
+                { name: movie.movieName }
+            );
+        }
+        if(movie.yearOfRelease !== undefined) {
+            await Movies.updateOne(
+                { _id: req.query.movieId },
+                { yearOfRelease: movie.yearOfRelease }
+            );
+        }
+        if(movie.plot !== undefined) {
+            await Movies.updateOne(
+                { _id: movie.id },
+                { plot: movie.plot }
+            );
+        }
+        if(movie.producer !== undefined) {
+            await Producer.updateOne(
+                { _id: movie.producer.id },
+                { name: movie.producer.name }
+            );
+        }
+        
+        // if(movie.actors !== undefined ) {
+        //     movie.actors.forEach(async (actor) => {
+        //         console.log(actor.name);
+        //         await Actor.updateOne(
+        //             { _id: actor.id },
+        //             { name: actor.name }
+        //         );
+        //     });
+        // }
+        
+    } catch (e) {
+        console.log(e);
+    }
+    // console.log(movie);
+    return res.json(movie);
 });
 
 module.exports = router;

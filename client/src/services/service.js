@@ -24,3 +24,16 @@ export const loginUser = (data) => {
     })
         .catch((e) => { throw e });
 };
+
+export const editMovie = (data,index) => {
+    console.log(data, index);
+    // return axios.post(
+    //     URL+"/auth/movies/editmovie",
+    //     data, {
+    //         params: {
+    //             index
+    //         }
+    //     }
+    // ).then((res) => {
+    // }).catch((e) => console.log(e));
+};

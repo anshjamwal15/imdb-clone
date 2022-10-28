@@ -60,6 +60,7 @@ function getAllMovies(movies) {
                 bio: movie.producer.bio
             };
             const newMovie = {
+                id: movie._id,
                 name: movie.name,
                 yearOfRelease: movie.yearOfRelease,
                 plot: movie.plot,

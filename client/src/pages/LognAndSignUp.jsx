@@ -3,7 +3,7 @@ import { useState } from "react";
 import '../components/assets/LoginAndSignUp.css';
 import { FaFacebook, FaGoogle, FaLinkedin } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { AddUser, loginUser } from "../services/UserService";
+import { AddUser, loginUser } from "../services/service";
 
 function LoginAndSignUp() {
 

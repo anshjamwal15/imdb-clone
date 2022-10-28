@@ -34,4 +34,43 @@ function getMovies(movies) {
     }
 }
 
-module.exports = { getMovies };
+function getAllMovies(movies) {
+
+    let moviesArr = [];
+
+    if (movies.length > 0) {
+        movies.forEach((movie) => {
+            let producer = {};
+            let allActors = [];
+            movie.actors.forEach((actor) => {
+                const newActor = {
+                    id: actor._id,
+                    name: actor.name,
+                    gender: actor.gender,
+                    dob: actor.dob,
+                    bio: actor.bio
+                };
+                allActors.push(newActor);
+            });
+            producer = {
+                id: movie.producer._id,
+                name: movie.producer.name,
+                gender: movie.producer.gender,
+                dob: movie.producer.dob,
+                bio: movie.producer.bio
+            };
+            const newMovie = {
+                name: movie.name,
+                yearOfRelease: movie.yearOfRelease,
+                plot: movie.plot,
+                poster: movie.poster,
+                producer: producer,
+                actors: allActors
+            };
+            moviesArr.push(newMovie);
+        });
+    }
+    return moviesArr;
+}
+
+module.exports = { getMovies, getAllMovies };

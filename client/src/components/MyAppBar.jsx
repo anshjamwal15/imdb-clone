@@ -65,7 +65,7 @@ export default function MyAppBar() {
                             textDecoration: 'none',
                         }}
                     >
-                        MY IMDB
+                        IMDB CLONE
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>

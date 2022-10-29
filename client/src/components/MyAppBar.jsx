@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import LocalMoviesIcon from '@mui/icons-material/LocalMovies';
 import { useNavigate } from 'react-router-dom';
 
-export default function MyAppBar() {
+export default function MyAppBar({ changePage }) {
 
     const navigate = useNavigate();
 
@@ -97,11 +97,12 @@ export default function MyAppBar() {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
-                            {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
-                                </MenuItem>
-                            ))}
+                            <MenuItem onClick={handleCloseNavMenu}>
+                                <Typography textAlign="center">All Movies</Typography>
+                            </MenuItem>
+                            <MenuItem onClick={handleCloseNavMenu}>
+                                <Typography onClick={changePage} textAlign="center">Add Movie</Typography>
+                            </MenuItem>
                         </Menu>
                     </Box>
                     <LocalMoviesIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -124,15 +125,14 @@ export default function MyAppBar() {
                         MY IMDB
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map((page) => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                {page}
-                            </Button>
-                        ))}
+                        <Button
+                            onClick={() => changePage('all movies')}
+                            sx={{ my: 2, color: 'white', display: 'block' }}
+                        >All Movies</Button>
+                        <Button
+                            onClick={() => changePage('add movie')}
+                            sx={{ my: 2, color: 'white', display: 'block' }}
+                        >Add Movie</Button>
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
@@ -157,6 +157,9 @@ export default function MyAppBar() {
                             open={Boolean(anchorUser)}
                             onClose={handleCloseUserMenu}
                         >
+                            <MenuItem onClick={handleCloseUserMenu}>
+                                <Typography onClick={() => changePage('profile')} textAlign="center">Profile</Typography>
+                            </MenuItem>
                             <MenuItem onClick={handleCloseUserMenu}>
                                 <Typography onClick={logOut} textAlign="center">Logout</Typography>
                             </MenuItem>

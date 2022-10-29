@@ -26,14 +26,12 @@ export const loginUser = (data) => {
 };
 
 export const editMovie = (data,index) => {
-    console.log(data, index);
-    // return axios.post(
-    //     URL+"/auth/movies/editmovie",
-    //     data, {
-    //         params: {
-    //             index
-    //         }
-    //     }
-    // ).then((res) => {
-    // }).catch((e) => console.log(e));
+
+    let newData = {index, data}
+
+    return axios.post(
+        URL+"/auth/movies/editmovie",
+        newData
+    ).then((res) => { })
+    .catch((e) => console.log(e));
 };

@@ -116,53 +116,46 @@ router.get('/getallmovies', async (req, res) => {
 
     const dto = movieDto.getAllMovies(allMovies);
 
-    return res.json(allMovies);
+    return res.json(dto);
 });
 
 router.post('/editmovie', async (req, res) => {
 
     const movie = req.body;
 
+    const id = req.body.index;
+
+    console.log(req.body)
     try {
-        if(movie.movieName !== undefined) {
+        if(movie.data.movieName !== undefined && movie.data.movieName !== '') {
             await Movies.updateOne(
-                { _id: req.query.movieId },
-                { name: movie.movieName }
+                { _id: id },
+                { name: movie.data.movieName }
             );
         }
-        if(movie.yearOfRelease !== undefined) {
+        if(movie.data.yearOfRelease !== undefined && movie.data.yearOfRelease !== '') {
             await Movies.updateOne(
-                { _id: req.query.movieId },
-                { yearOfRelease: movie.yearOfRelease }
+                { _id: id },
+                { yearOfRelease: movie.data.yearOfRelease }
             );
         }
-        if(movie.plot !== undefined) {
+        if(movie.data.plot !== '' && movie.data.plot !== undefined) {
             await Movies.updateOne(
-                { _id: movie.id },
-                { plot: movie.plot }
+                { _id: id },
+                { plot: movie.data.plot }
             );
         }
-        if(movie.producer !== undefined) {
+        if(movie.data.producer !== '' && movie.data.producer !== undefined) {
             await Producer.updateOne(
-                { _id: movie.producer.id },
-                { name: movie.producer.name }
+                { _id: id },
+                { name: movie.data.producer }
             );
         }
-        
-        // if(movie.actors !== undefined ) {
-        //     movie.actors.forEach(async (actor) => {
-        //         console.log(actor.name);
-        //         await Actor.updateOne(
-        //             { _id: actor.id },
-        //             { name: actor.name }
-        //         );
-        //     });
-        // }
         
     } catch (e) {
         console.log(e);
     }
-    // console.log(movie);
+
     return res.json(movie);
 });
 

@@ -35,3 +35,39 @@ export const editMovie = (data,index) => {
     ).then((res) => { })
     .catch((e) => console.log(e));
 };
+
+export const addMovie = (data) => {
+
+    let actorsArr = [];
+
+    data.actors.map((actor) => {
+        let newActor = {
+            name: actor,
+            gender: '',
+            dob: '',
+            bio: ''
+        };
+        actorsArr.push(newActor);
+    });
+
+    let newData = {
+        movie: {
+            newMovieName: data.movieName,
+            yearOfRelease: data.yearOfRelease,
+            plot: data.bio,
+            poster: data.imageurl
+        },
+        producer: {
+            name: data.producer,
+            gender: '',
+            dob: '',
+            bio: '',
+        },
+        actors: actorsArr
+    };
+    return axios.post(
+        URL+"/auth/movies/addmovie",
+        newData,
+    ).then((res) => { })
+    .catch((e) => console.log(e));
+};

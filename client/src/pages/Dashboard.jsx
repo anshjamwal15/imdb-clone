@@ -40,7 +40,7 @@ export default function Dashboard() {
         return (
             <>
                 <MyAppBar changePage={changePage} />
-                <AddMovie />
+                <AddMovie changePage={changePage} />
             </>
         );
     } else if (addMoviePage[0].movielist === true) {

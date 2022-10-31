@@ -96,7 +96,7 @@ export default function MovieList() {
                                 component="img"
                                 height="140"
                                 image={movie.poster}
-                                alt="green iguana"
+                                alt="img"
                             />
                             <CardContent>
                                 <div style={{ display: 'flex' }}>

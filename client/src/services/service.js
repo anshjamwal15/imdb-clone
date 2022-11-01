@@ -71,3 +71,22 @@ export const addMovie = (data) => {
     ).then((res) => { })
     .catch((e) => console.log(e));
 };
+
+export const getUser = (req) => {
+    return axios.get(
+        URL+"/auth/user/getuser",
+        {params: { userId: req }}
+    ).then(res => res)
+    .catch((e) => console.log(e));
+}
+
+export const editUser = (data,userId) => {
+
+    let req = {userId, data};
+
+    return axios.post(
+        URL+"/auth/user/edituser",
+        req
+    ).then(res => res)
+    .catch(e => console.log(e));
+}

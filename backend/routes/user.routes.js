@@ -73,4 +73,42 @@ router.post("/login", async (req, res) => {
     }
 });
 
+router.get('/getuser', async (req, res) => {
+
+    const {userId} = req.query;
+
+    const user = await User.findOne({ _id: userId });
+
+    if(user) {
+        return res.json(user);
+    } 
+    return res.sendStatus(400);
+});
+
+router.post('/edituser', async (req, res) => {
+
+    const { userId } = req.body;
+
+    const { userName, email} = req.body.data;
+
+    try {   
+        if(userName !== undefined && userName !== '') {
+            await User.updateOne(
+                { _id: userId },
+                { name: userName }
+            );
+        }
+        if(email !== undefined && email !== '') {
+            await User.updateOne(
+                { _id: userId },
+                { email: email }
+            );
+        }
+    } catch (e) {
+        console.log(e);
+        return res.sendStatus(500);
+    }
+    return res.send('User updated successfully');
+});
+
 module.exports = router;

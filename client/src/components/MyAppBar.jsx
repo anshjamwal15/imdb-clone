@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import LocalMoviesIcon from '@mui/icons-material/LocalMovies';
 import { useNavigate } from 'react-router-dom';
 
-export default function MyAppBar({ changePage }) {
+export default function MyAppBar({ changePage}) {
 
     const navigate = useNavigate();
 
@@ -42,8 +42,6 @@ export default function MyAppBar({ changePage }) {
         localStorage.removeItem('userDetails');
         navigate('/');
     }
-
-    const pages = ['All Movies', 'Add Movie'];
 
     return (
         <AppBar position="static" >

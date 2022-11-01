@@ -125,7 +125,6 @@ router.post('/editmovie', async (req, res) => {
 
     const id = req.body.index;
 
-    console.log(req.body)
     try {
         if(movie.data.movieName !== undefined && movie.data.movieName !== '') {
             await Movies.updateOne(

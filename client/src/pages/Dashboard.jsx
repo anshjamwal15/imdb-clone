@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import MyAppBar from "../components/MyAppBar";
 import MovieList from "../components/MovieList";
 import AddMovie from "../components/AddMovie";
+import Profile from "../components/Profile";
 
 export default function Dashboard() {
 
@@ -36,36 +37,17 @@ export default function Dashboard() {
     useEffect(() => {
     }, [addMoviePage])
 
-    if (addMoviePage[0].addmovie === true) {
-        return (
-            <>
-                <MyAppBar changePage={changePage} />
-                <AddMovie changePage={changePage} />
-            </>
-        );
-    } else if (addMoviePage[0].movielist === true) {
-        return (
-            <>
-                <MyAppBar changePage={changePage} />
-                <MovieList />
-            </>
-        );
-    } else if (addMoviePage[0].profile === true) {
-        return (
-            <>
-                <MyAppBar changePage={changePage} />
-                <h1>I Am profile</h1>
-                {/* <MovieList /> */}
-            </>
-        );
-    } else {
-        return (
-            <>
-                <MyAppBar changePage={changePage} />
-                <MovieList />
-            </>
-        );
-    }
-
-
+    return (
+        <>
+            <MyAppBar changePage={changePage} />
+            {addMoviePage[0].addmovie === true ? <AddMovie /> : ''}
+            {addMoviePage[0].movielist === true ? <MovieList /> : ''}
+            {addMoviePage[0].profile === true ? <Profile /> : ''}
+            {
+                addMoviePage[0].addmovie === false && addMoviePage[0].movielist === false &&
+                addMoviePage[0].profile === false ? 
+                <MovieList /> : ''
+            }
+        </>
+    );
 }

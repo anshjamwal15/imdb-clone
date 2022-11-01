@@ -21,7 +21,7 @@ h1 {
     margin: 0;
 }
 
-p {
+.mypTag {
     font-size: 14px;
     font-weight: 100;
     line-height: 20px;
@@ -29,7 +29,7 @@ p {
     margin: 20px 0 30px;
 }
 
-span {
+.myspan {
     font-size: 12px;
 }
 

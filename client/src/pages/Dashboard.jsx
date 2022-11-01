@@ -3,6 +3,7 @@ import MyAppBar from "../components/MyAppBar";
 import MovieList from "../components/MovieList";
 import AddMovie from "../components/AddMovie";
 import Profile from "../components/Profile";
+import MovieInfo from "../components/MovieInfo";
 
 export default function Dashboard() {
 
@@ -10,7 +11,8 @@ export default function Dashboard() {
         {
             addmovie: false,
             movielist: false,
-            profile: false
+            profile: false,
+            movieInfo: false
         }
     ]);
 
@@ -32,6 +34,10 @@ export default function Dashboard() {
             pageStates[0].profile = true;
             setMoviePage(pageStates);
         }
+        if (value === 'movie details') {
+            pageStates[0].movieInfo = true;
+            setMoviePage(pageStates);
+        }
     };
 
     useEffect(() => {
@@ -41,12 +47,13 @@ export default function Dashboard() {
         <>
             <MyAppBar changePage={changePage} />
             {addMoviePage[0].addmovie === true ? <AddMovie /> : ''}
-            {addMoviePage[0].movielist === true ? <MovieList /> : ''}
+            {addMoviePage[0].movielist === true ? <MovieList changePage={changePage} /> : ''}
             {addMoviePage[0].profile === true ? <Profile /> : ''}
+            {addMoviePage[0].movieInfo === true ? <MovieInfo /> : ''}
             {
                 addMoviePage[0].addmovie === false && addMoviePage[0].movielist === false &&
-                addMoviePage[0].profile === false ? 
-                <MovieList /> : ''
+                addMoviePage[0].profile === false && addMoviePage[0].movieInfo === false ? 
+                <MovieList changePage={changePage} /> : ''
             }
         </>
     );

@@ -51,7 +51,7 @@ function LoginAndSignUp() {
                                 <a href="#" className="social"><FaGoogle /></a>
                                 <a href="#" className="social"><FaLinkedin /></a>
                             </div>
-                            <span>or use your email for registration</span>
+                            <span className="myspan">or use your email for registration</span>
                             <input type="text" onChange={e => handleSignUpChange(e)} name="name" placeholder="Name" />
                             <input type="email" onChange={e => handleSignUpChange(e)} name="email" placeholder="Email" />
                             <input type="password" onChange={e => handleSignUpChange(e)} name="password" placeholder="Password" />
@@ -66,7 +66,7 @@ function LoginAndSignUp() {
                                 <a href="#" className="social"><FaGoogle /></a>
                                 <a href="#" className="social"><FaLinkedin /></a>
                             </div>
-                            <span>or use your account</span>
+                            <span className="myspan">or use your account</span>
                             <input type="email" onChange={e => handleLoginChange(e)} name="email" placeholder="Email" />
                             <input type="password" onChange={e => handleLoginChange(e)} name="password" placeholder="Password" />
                             <a href="#">Forgot your password?</a>
@@ -77,12 +77,12 @@ function LoginAndSignUp() {
                         <div className="overlay">
                             <div className="overlay-panel overlay-left">
                                 <h1>Welcome Back!</h1>
-                                <p>To keep connected with us please login with your personal info</p>
+                                <p className="mypTag">To keep connected with us please login with your personal info</p>
                                 <button onClick={handleClick} className="ghost" id="signIn">Sign In</button>
                             </div>
                             <div className="overlay-panel overlay-right">
                                 <h1>Hello, Friend!</h1>
-                                <p>Enter your personal details and start journey with us</p>
+                                <p className="mypTag">Enter your personal details and start journey with us</p>
                                 <button onClick={handleClick} className="ghost" id="signUp">Sign Up</button>
                             </div>
                         </div>

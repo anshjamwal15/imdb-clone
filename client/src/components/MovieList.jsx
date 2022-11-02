@@ -13,7 +13,7 @@ import { AiFillEdit, AiOutlineCloseCircle } from 'react-icons/ai';
 import { BsSave } from 'react-icons/bs';
 import { editMovie } from "../services/service";
 
-export default function MovieList({changePage}) {
+export default function MovieList({changePage,movieDetail}) {
 
     const [movies, setMovies] = React.useState([]);
 
@@ -86,6 +86,11 @@ export default function MovieList({changePage}) {
         }
     }
 
+    const movieDetails = (id) => {
+        movieDetail(id);
+        changePage('movie details');
+    }
+
     return (
         <div className='somethin' style={{ margin: "50px" }}>
             <Grid container rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 3 }} justifyContent="center">
@@ -143,7 +148,7 @@ export default function MovieList({changePage}) {
                             </CardContent>
 
                             <CardActions>
-                                <Button onClick={() => changePage('movie details')} size="small">Learn More</Button>
+                                <Button onClick={() => movieDetails(movie.id)} size="small">Learn More</Button>
                             </CardActions>
                         </Card>
                     </Grid>

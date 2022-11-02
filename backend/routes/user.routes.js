@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const Rating = require('../models/Rating');
 
 router.post("/add", async (req, res) => {
 
@@ -75,13 +76,13 @@ router.post("/login", async (req, res) => {
 
 router.get('/getuser', async (req, res) => {
 
-    const {userId} = req.query;
+    const { userId } = req.query;
 
     const user = await User.findOne({ _id: userId });
 
-    if(user) {
+    if (user) {
         return res.json(user);
-    } 
+    }
     return res.sendStatus(400);
 });
 
@@ -89,16 +90,16 @@ router.post('/edituser', async (req, res) => {
 
     const { userId } = req.body;
 
-    const { userName, email} = req.body.data;
+    const { userName, email } = req.body.data;
 
-    try {   
-        if(userName !== undefined && userName !== '') {
+    try {
+        if (userName !== undefined && userName !== '') {
             await User.updateOne(
                 { _id: userId },
                 { name: userName }
             );
         }
-        if(email !== undefined && email !== '') {
+        if (email !== undefined && email !== '') {
             await User.updateOne(
                 { _id: userId },
                 { email: email }
@@ -109,6 +110,22 @@ router.post('/edituser', async (req, res) => {
         return res.sendStatus(500);
     }
     return res.send('User updated successfully');
+});
+
+router.get('/userrating', async (req, res) => {
+
+    const { userId, movieId } = req.query;
+
+    try {
+        const rating = await Rating.find({ $and: [{ userId: userId }, { movieId: movieId }] });
+
+        if (rating) {
+            return res.json(rating);
+        }
+    } catch (e) {
+        console.log(e);
+    }
+    return res.sendStatus(500);
 });
 
 module.exports = router;

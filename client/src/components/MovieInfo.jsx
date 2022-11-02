@@ -1,16 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
-import { TextField, Button } from "@mui/material";
 import Rating from '@mui/material/Rating';
+import Stack from '@mui/material/Stack';
+import Paper from '@mui/material/Paper';
+import { styled } from '@mui/material/styles';
+import URL from '../Helper';
+import { addRating, getRating } from '../services/service';
 
-export default function MovieInfo() {
+export default function MovieInfo({ movieId }) {
 
     const [rating, setRating] = useState();
 
-    const ratingChange = (e) => {
-        setRating(e.target.value);
-    }
+    const [movieInfo, setMovieInfo] = useState([]);
 
+    const user = JSON.parse(localStorage.getItem('userDetails'));
+
+    useEffect(() => {
+        fetch(URL + `/auth/movies/getmovies?movieId=${movieId}`).then((res) => res.json())
+            .then((data) => {
+                setMovieInfo(data);
+            });
+        getRating(user._id, movieId).then((res) => setRating(res.data)).catch((e) => console.log(e));
+    },[rating]);
+
+    const ratingChange = (e) => {
+        addRating(movieId, user._id, e.target.value);
+    }
+    
     return (
         <>
             <div style={{ margin: '50px' }}>
@@ -18,34 +34,37 @@ export default function MovieInfo() {
                     <div className="w3-row-padding">
                         <div className="w3-third">
                             <div className="w3-white w3-text-grey w3-card-4">
-                                <h1 style={{ textAlign: 'center' }}>Sholay</h1>
+                                <h1 style={{ textAlign: 'center' }}>{movieInfo.name}</h1>
                                 <div className="w3-display-container">
-                                    <Avatar sx={{ width: 100, height: 100, marginLeft: '135px' }} alt="Remy Sharp" src="https://www.w3schools.com/w3images/avatar_hat.jpg" />
+                                    <Avatar sx={{ width: 100, height: 100, marginLeft: '135px' }} alt="Remy Sharp" src={movieInfo.poster} />
                                     <div className="w3-container">
                                         <h2></h2>
                                     </div>
                                 </div>
                                 <div className="w3-container">
-                                    <p>Produced By : Saleem khan</p>
-                                    <div style={{display: 'flex'}}>
-                                        <p style={{margin: '0'}}>Rate : </p>
-                                        <Rating onChange={ratingChange} name="size-large" size="large" />
+                                    <p>Produced By : {movieInfo.producer !== undefined ? movieInfo.producer.name : ''}</p>
+                                    <div style={{ display: 'flex' }}>
+                                        <p style={{ margin: '0' }}>Rate : </p>
+                                        <Rating value={rating !== undefined && rating.length > 0
+                                            ? Number(rating[0].count) : 0} onChange={ratingChange} name="size-large" size="large" />
                                     </div>
-                                    <p>Year of Release : 1975</p>
+                                    <p>Year of Release : {movieInfo.yearOfRelease}</p>
                                 </div>
                                 <hr />
                             </div><br />
                         </div>
                         <div className="w3-twothird">
                             <div className="w3-container w3-card w3-white w3-margin-bottom">
-                                <h2 className="w3-text-grey w3-padding-16">Edit User</h2>
+                                <h2 className="w3-text-grey w3-padding-16">Movie Information</h2>
                                 <div className="w3-container">
-                                    <TextField style={{ marginRight: '10px' }} autoComplete="off" name="userName" size='small' id="outlined-basic" label="username" variant="outlined" />
-                                    <TextField style={{ marginRight: '10px' }} autoComplete="off" name="email" size='small' id="outlined-basic" label="email" variant="outlined" />
-                                    <Button style={{ marginRight: '10px' }} variant="contained">Cancel</Button>
-                                    <Button variant="outlined">Save</Button>
+                                    <p>{movieInfo.plot}</p>
                                 </div>
                                 <hr />
+                                <Stack style={{ margin: '10px' }} direction="row" spacing={2}>
+                                    {movieInfo.actors !== undefined ? movieInfo.actors.map((actor) => (
+                                        <Item key={actor.name}>{actor.name}</Item>
+                                    )) : ''}
+                                </Stack>
                             </div>
                         </div>
                     </div>
@@ -54,3 +73,10 @@ export default function MovieInfo() {
         </>
     );
 }
+const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: '#1A2027',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: '#fff',
+}));

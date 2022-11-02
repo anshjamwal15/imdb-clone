@@ -2,7 +2,6 @@ function getMovies(movies) {
 
     let actors = [];
     let producer = {};
-
     if (movies["producer"]) {
         producer = {
             name: movies.producer.name,

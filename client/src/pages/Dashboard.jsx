@@ -16,6 +16,8 @@ export default function Dashboard() {
         }
     ]);
 
+    const [movieId, setMovieId] = useState();
+
     const changePage = (value) => {
         let pageStates = [{
             addmovie: false,
@@ -40,6 +42,10 @@ export default function Dashboard() {
         }
     };
 
+    const movieDetail = (e) => {
+        setMovieId(e);
+    }
+
     useEffect(() => {
     }, [addMoviePage])
 
@@ -47,13 +53,13 @@ export default function Dashboard() {
         <>
             <MyAppBar changePage={changePage} />
             {addMoviePage[0].addmovie === true ? <AddMovie /> : ''}
-            {addMoviePage[0].movielist === true ? <MovieList changePage={changePage} /> : ''}
+            {addMoviePage[0].movielist === true ? <MovieList movieDetail={movieDetail} changePage={changePage} /> : ''}
             {addMoviePage[0].profile === true ? <Profile /> : ''}
-            {addMoviePage[0].movieInfo === true ? <MovieInfo /> : ''}
+            {addMoviePage[0].movieInfo === true ? <MovieInfo movieId={movieId} /> : ''}
             {
                 addMoviePage[0].addmovie === false && addMoviePage[0].movielist === false &&
                 addMoviePage[0].profile === false && addMoviePage[0].movieInfo === false ? 
-                <MovieList changePage={changePage} /> : ''
+                <MovieList movieDetail={movieDetail} changePage={changePage} /> : ''
             }
         </>
     );

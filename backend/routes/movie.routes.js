@@ -4,6 +4,8 @@ const router = express.Router();
 const Movies = require('../models/Movies');
 const Actor = require('../models/Actor');
 const Producer = require('../models/Producer');
+const User = require('../models/User');
+const Rating = require('../models/Rating');
 const movieDto = require('../dtos/movies.dto');
 const actorDto = require('../dtos/actor.dto');
 const producerDto = require('../dtos/producer.dto');
@@ -65,17 +67,19 @@ router.post('/addmovie', async (req, res) => {
 
 router.get('/getmovies', async (req, res) => {
 
-    const movieName = req.query.movie;
+    const { movieId } = req.query;
+    try {
+        const exisitingMovie = await Movies.findOne({ _id: movieId }).populate('actors').populate('producer');
 
-    const exisitingMovie = await Movies.findOne({ name: movieName }).populate('actors').populate('producer');
+        const dto = movieDto.getMovies(exisitingMovie);
 
-    if (exisitingMovie.length === 0) {
-        return res.status(409).send(`No Movie found with name : ${movieName}`);
+        return res.json(dto);
+
+    } catch (e) {
+        console.log(e);
     }
 
-    const dto = movieDto.getMovies(exisitingMovie);
-
-    res.json(dto);
+    return res.sendStatus(500);
 
 });
 
@@ -126,36 +130,70 @@ router.post('/editmovie', async (req, res) => {
     const id = req.body.index;
 
     try {
-        if(movie.data.movieName !== undefined && movie.data.movieName !== '') {
+        if (movie.data.movieName !== undefined && movie.data.movieName !== '') {
             await Movies.updateOne(
                 { _id: id },
                 { name: movie.data.movieName }
             );
         }
-        if(movie.data.yearOfRelease !== undefined && movie.data.yearOfRelease !== '') {
+        if (movie.data.yearOfRelease !== undefined && movie.data.yearOfRelease !== '') {
             await Movies.updateOne(
                 { _id: id },
                 { yearOfRelease: movie.data.yearOfRelease }
             );
         }
-        if(movie.data.plot !== '' && movie.data.plot !== undefined) {
+        if (movie.data.plot !== '' && movie.data.plot !== undefined) {
             await Movies.updateOne(
                 { _id: id },
                 { plot: movie.data.plot }
             );
         }
-        if(movie.data.producer !== '' && movie.data.producer !== undefined) {
+        if (movie.data.producer !== '' && movie.data.producer !== undefined) {
             await Producer.updateOne(
                 { _id: id },
                 { name: movie.data.producer }
             );
         }
-        
+
     } catch (e) {
         console.log(e);
     }
 
     return res.json(movie);
+});
+
+router.post('/ratemovie', async (req, res) => {
+
+    const { movieId, userId, count } = req.body;
+
+    const rating = await Rating.find({ $and: [{ userId: userId }, { movieId: movieId }] });
+
+    const movie = await Movies.findOne({ _id: movieId });
+
+    const user = await User.findOne({ _id: userId });
+
+    if (rating.length > 0) {
+        try {
+            await Rating.updateOne(
+                { _id: rating[0]._id.valueOf() },
+                { count: count }
+            );
+        } catch (e) {
+            console.log(e);
+            return res.sendStatus(500);
+        }
+        return res.sendStatus(200);
+    }
+    try {
+        const rating = await Rating.create({
+            count: count,
+            userId: user._id,
+            movieId: movie._id
+        });
+        return res.sendStatus(201);
+    } catch (e) {
+        return res.sendStatus(500);
+    }
 });
 
 module.exports = router;

@@ -17,7 +17,7 @@ export const AddUser = (data) => {
 
 export const loginUser = (data) => {
     return axios.post(
-        URL + "/auth/user/add",
+        URL + "/auth/user/login",
         data
     ).then((res) => {
         saveTokenInLocalStorage(JSON.stringify(res.data));

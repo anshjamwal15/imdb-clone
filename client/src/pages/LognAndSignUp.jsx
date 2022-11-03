@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import '../components/assets/LoginAndSignUp.css';
 import { FaFacebook, FaGoogle, FaLinkedin } from 'react-icons/fa';
@@ -30,14 +30,23 @@ function LoginAndSignUp() {
     const handleSignUp = async (e) => {
         AddUser(messageFrom).then((res) => {
         });
-        navigate('/hello');
+        // navigate('/');
     }
 
     const handleLogin = async (e) => {
         loginUser(messageFrom).then((res) => {
         });
-        navigate('/hello');
+        navigate('/');
     }
+
+    useEffect(() => {
+        setTimeout(() => {
+            const login = localStorage.getItem('userDetails');
+            if (login) {
+                navigate('/');
+            }
+        }, 800);
+    });
 
     return (
         <>
